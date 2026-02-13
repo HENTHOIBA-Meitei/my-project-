@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will you be my Valentine? ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            max-width: 400px;
+            width: 100%;
+            background: black;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a, 0 20px 40px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 9/16;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+        }
+
+        .story-slide {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            padding: 20px;
+            color: white;
+            position: relative;
+            background: black;
+            overflow-y: auto;
+        }
+
+        .story-slide.active {
+            display: flex;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #222;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 15px;
+            color: white;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .follow-btn {
+            color: #0095f6;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Question Slide */
+        .question-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 30px 0;
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.3;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .yes-btn {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            background: #ff4da6;
+        }
+
+        .no-btn {
+            background: #333;
+            color: white;
+            border: 2px solid #666;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            background: #444;
+        }
+
+        .shy-note {
+            color: #888;
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+            padding: 12px 0;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+        }
+
+        .device-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .caption {
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .caption-username {
+            font-weight: 600;
+            color: white;
+            margin-right: 8px;
+        }
+
+        .caption-text {
+            color: #ccc;
+        }
+
+        .hashtag {
+            color: #666;
+            font-size: 13px;
+            padding-bottom: 12px;
+        }
+
+        /* Celebration Slide */
+        .celebration-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .heart-animation {
+            font-size: 50px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .celebration-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff69b4;
+            text-align: center;
+        }
+
+        .happy-message {
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.5;
+            color: white;
+            padding: 0 20px;
+        }
+
+        /* Gift/Flower */
+        .flower-gift {
+            text-align: center;
+            padding: 25px;
+            border: 2px dashed #444;
+            border-radius: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .flower-gift:hover {
+            border-color: #ff69b4;
+            background: #111;
+        }
+
+        .gift-emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .gift-text {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .click-hint {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .flower-reveal {
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+            width: 100%;
+        }
+
+        .flower {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .flower-message {
+            font-size: 16px;
+            color: #ff69b4;
+            line-height: 1.5;
+        }
+
+        /* Apology Slide */
+        .apology-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .mood-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+
+        .letter-preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: #111;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .letter-preview:hover {
+            background: #1a1a1a;
+        }
+
+        .letter-icon {
+            font-size: 24px;
+        }
+
+        .letter-link {
+            font-size: 18px;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Letter Slide */
+        .letter-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .letter-heading {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: white;
+            font-weight: 400;
+        }
+
+        .letter-body {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .letter-body p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #ddd;
+        }
+
+        .music-credit {
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Little Things */
+        .little-things-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
+
+        .little-title {
+            font-size: 20px;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .tap-hint {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .tap-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .tap-item {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tap-item:hover {
+            background: #1a1a1a;
+            border-color: #444;
+        }
+
+        .bullet {
+            color: #ff69b4;
+            margin-right: 10px;
+        }
+
+        .item-text {
+            color: white;
+            font-size: 15px;
+        }
+
+        .revealed-message {
+            display: block;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #333;
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message-link {
+            color: #0095f6;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .message-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Sorry Letter Multiple */
+        .sorry-letter-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .sorry-text {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .sorry-subtext {
+            font-size: 16px;
+            color: #aaa;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .staring-text {
+            font-size: 20px;
+            color: #ff69b4;
+            margin-top: 20px;
+        }
+
+        /* Floating No Button */
+        .floating-no {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+
+        .no-btn-floating {
+            background: #333;
+            color: white;
+            border: 2px solid #666;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            animation: float 3s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 0;
+            margin-top: auto;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+            width: 20px;
+            border-radius: 10px;
+        }
+
+        /* Next Button */
+        .next-btn {
+            position: absolute;
+            bottom: 25px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .prev-btn {
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Love Letter */
+        .love-letter {
+            background: #111;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .love-letter p {
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .phone-frame {
+                border-radius: 0;
+                max-width: 100%;
+                aspect-ratio: auto;
+                min-height: 800px;
+            }
+            
+            body {
+                padding: 0;
+            }
+        }
+
+        /* Custom Scroll */
+        .story-slide::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .story-slide::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        .story-slide::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- SLIDE 1: Valentine Question -->
+        <div class="story-slide active" id="slide1">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">11s ago</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="question-container">
+                <p class="question-text">nirali will you be my valentine?</p>
+                
+                <div class="button-container">
+                    <button class="yes-btn" onclick="showSlide(2)">Yes</button>
+                    <button class="no-btn" id="noBtn" onclick="moveNoButton()">No</button>
+                </div>
+                
+                <p class="shy-note">*"No" seems a bit shy 😉*</p>
+            </div>
+            
+            <div class="stats">
+                <span class="views">2.4M views</span>
+                <span class="likes">9,980 likes</span>
+                <span class="comments">28.4K comments</span>
+            </div>
+            
+            <div class="device-info">
+                <span class="device">📱 MacBook Pro</span>
+                <span class="views-count">768K</span>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">nirali_shendye</span>
+                <span class="caption-text">E · WHERE IS MY HUS</span>
+            </div>
+            
+            <div class="hashtag">
+                dating a man in tech means THIS apparently...
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot active" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="next-btn" onclick="showSlide(2)">→</button>
+        </div>
+        
+        <!-- SLIDE 2: YES Response - Celebration -->
+        <div class="story-slide" id="slide2">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">Just now</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="celebration-container">
+                <div class="heart-animation">❤️❤️❤️</div>
+                <p class="celebration-text">SHE SAID YES! 🎉</p>
+                <p class="happy-message">Best decision I ever made. Can't wait to spend Valentine's with you, Nirali! ❤️</p>
+                
+                <div class="flower-gift" onclick="showFlower()">
+                    <p class="gift-emoji">🎁</p>
+                    <p class="gift-text">I have something special for you...</p>
+                    <p class="click-hint">Click to open! 😍✨</p>
+                </div>
+                
+                <div class="flower-reveal hidden">
+                    <p class="flower">🌹🍀</p>
+                    <p class="flower-message">This flower will never wilt. Just like my love for you. I promise to cherish you every single day, and never take your beautiful heart for granted again. ❤️</p>
+                    <p class="flower-message" style="margin-top: 15px; color: white;">You mean everything to me ❤️✨</p>
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">She said yes! 🥹❤️</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot active" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(1)">←</button>
+            <button class="next-btn" onclick="showSlide(3)">→</button>
+        </div>
+        
+        <!-- SLIDE 3: Late Night - Walking for hours -->
+        <div class="story-slide" id="slide3">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">Late night...</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="apology-container">
+                <p class="mood-text">It's late night...</p>
+                <p class="mood-text">I've been walking for hours...</p>
+                <p class="mood-text">I'm holding something heavy... not in hands, but in heart...</p>
+                <p class="mood-text">Let me talk...</p>
+                
+                <div class="letter-preview" onclick="showSlide(4)">
+                    <span class="letter-icon">📄</span>
+                    <span class="letter-link">My Sorry Letter to You...</span>
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">When a simple "sorry" isn't enough... 😔❤️</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot active" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(2)">←</button>
+            <button class="next-btn" onclick="showSlide(4)">→</button>
+        </div>
+        
+        <!-- SLIDE 4: I know I hurt you... -->
+        <div class="story-slide" id="slide4">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">2:47 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="apology-container">
+                <p class="mood-text" style="font-size: 22px;">I know I hurt you...</p>
+                <p class="mood-text" style="margin-top: 20px;">Read my letter...</p>
+                
+                <div class="letter-preview" onclick="showSlide(5)" style="margin-top: 40px;">
+                    <span class="letter-icon">📄</span>
+                    <span class="letter-link">Read my letter →</span>
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">When a simple "sorry" isn't enough... 😢❤️</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot active" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(3)">←</button>
+            <button class="next-btn" onclick="showSlide(5)">→</button>
+        </div>
+        
+        <!-- SLIDE 5: Full Apology Letter -->
+        <div class="story-slide" id="slide5">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">2:47 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="letter-container">
+                <h2 class="letter-heading">I'm Sorry</h2>
+                
+                <div class="letter-body">
+                    <p>For hurting you a lot, making you feel upset. I'm truly sorry. I never wanted to be the reason behind your tears or your silence. You mean more than I ever manage to show, and I hate that I let you down.</p>
+                    <p>I promise to grow, to listen, and to be better for you every single day. Thank you for staying, for caring, and for being you.</p>
+                    <p>I'm really trying... and I hope you can forgive me. ❤️</p>
+                </div>
+                
+                <div class="music-credit">
+                    <span>🎵 Tere Liye (From "F")</span>
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">When a simple "sorry" isn't enough... 😢❤️</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot active" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(4)">←</button>
+            <button class="next-btn" onclick="showSlide(6)">→</button>
+        </div>
+        
+        <!-- SLIDE 6: Staring at these all night -->
+        <div class="story-slide" id="slide6">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">3:12 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="sorry-letter-container">
+                <p class="sorry-text">I've been staring at these all night... 😂</p>
+                <div style="display: flex; gap: 15px; margin: 30px 0; justify-content: center;">
+                    <span style="font-size: 40px;">💔</span>
+                    <span style="font-size: 40px;">😔</span>
+                    <span style="font-size: 40px;">❤️</span>
+                </div>
+                <p class="sorry-subtext">You're so beautiful, but I still hurt you...</p>
+                <p class="sorry-subtext" style="color: white; margin-top: 20px;">I'm so sorry. ❤️</p>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">When a simple "sorry" isn't enough... ❤️</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot active" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(5)">←</button>
+            <button class="next-btn" onclick="showSlide(7)">→</button>
+        </div>
+        
+        <!-- SLIDE 7: Just your arms around me -->
+        <div class="story-slide" id="slide7">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">3:45 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="celebration-container">
+                <p style="font-size: 28px; margin-bottom: 20px;">I don't need anything fancy right now...</p>
+                <p style="font-size: 32px; color: #ff69b4; margin-bottom: 30px;">Just your arms around me, that's all I want.❤️</p>
+                
+                <button class="yes-btn" style="background: #333; box-shadow: none; margin-top: 20px;" onclick="showHugMessage()">🤗 Send a hug</button>
+                <p id="hugResponse" class="hidden" style="color: #ff69b4; margin-top: 20px; font-size: 18px;">Hug received. I'm waiting for yours. ❤️</p>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">When a simple "sorry" isn't enough... 😢💔</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot active" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(6)">←</button>
+            <button class="next-btn" onclick="showSlide(8)">→</button>
+        </div>
+        
+        <!-- SLIDE 8: Little Things I Want to Tell You -->
+        <div class="story-slide" id="slide8">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">4:20 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="little-things-container">
+                <p class="little-title">Little things I want to tell you...</p>
+                <p class="tap-hint">Tap each one</p>
+                
+                <div class="tap-items">
+                    <div class="tap-item" onclick="revealMessage(this)">
+                        <span class="bullet">⬤</span>
+                        <span class="item-text">I messed up... and I'm really sorry for that.</span>
+                        <span class="revealed-message hidden">I know sorry doesn't fix it, but I need you to know I mean it. Every word.</span>
+                    </div>
+                    
+                    <div class="tap-item" onclick="revealMessage(this)">
+                        <span class="bullet">⬤</span>
+                        <span class="item-text">I promise I'll be better for you.</span>
+                        <span class="revealed-message hidden">Every single day. I'll show up. I'll listen. I'll try harder. I'll be the man you deserve.</span>
+                    </div>
+                    
+                    <div class="tap-item" onclick="revealMessage(this)">
+                        <span class="bullet">⬤</span>
+                        <span class="item-text">Please forgive me... You mean so much to me.</span>
+                        <span class="revealed-message hidden">You're the best thing that's ever happened to me. I don't want to lose you.</span>
+                    </div>
+                </div>
+                
+                <div class="message-link" onclick="showSlide(5)">
+                    My message →
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">POV: You hurt her... so you made this for her.</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot active" onclick="showSlide(8)"></span>
+                <span class="dot" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(7)">←</button>
+            <button class="next-btn" onclick="showSlide(9)">→</button>
+        </div>
+        
+        <!-- SLIDE 9: From my heart - I'm Sorry -->
+        <div class="story-slide" id="slide9">
+            <div class="header">
+                <div class="user-info">
+                    <span class="username">anujbuilds</span>
+                    <span class="timestamp">5:00 AM</span>
+                </div>
+                <span class="follow-btn">Follow</span>
+            </div>
+            
+            <div class="apology-container">
+                <p style="font-size: 20px; color: #888; margin-bottom: 10px;">From my heart...</p>
+                <p style="font-size: 18px; color: #666; margin-bottom: 30px;">↓ Tap to see message ↓</p>
+                
+                <div class="letter-preview" onclick="showSlide(5)" style="background: #1a1a1a; border: 2px solid #ff69b4;">
+                    <span style="font-size: 32px; margin-right: 15px;">💌</span>
+                    <span style="font-size: 28px; color: #ff69b4; font-weight: 600;">I'm Sorry</span>
+                </div>
+                
+                <div style="margin-top: 40px; display: flex; gap: 15px; justify-content: center;">
+                    <span style="color: #666;">achin Gupta</span>
+                    <span style="color: #666;">Sameer A</span>
+                </div>
+            </div>
+            
+            <div class="caption">
+                <span class="caption-username">anujbuilds</span>
+                <span class="caption-text">POV: You hurt her... so you made this for her.</span>
+            </div>
+            
+            <div class="progress-dots">
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+                <span class="dot" onclick="showSlide(3)"></span>
+                <span class="dot" onclick="showSlide(4)"></span>
+                <span class="dot" onclick="showSlide(5)"></span>
+                <span class="dot" onclick="showSlide(6)"></span>
+                <span class="dot" onclick="showSlide(7)"></span>
+                <span class="dot" onclick="showSlide(8)"></span>
+                <span class="dot active" onclick="showSlide(9)"></span>
+            </div>
+            
+            <button class="prev-btn" onclick="showSlide(8)">←</button>
+            <button class="next-btn" onclick="showSlide(1)">↻</button>
+        </div>
+        
+        <!-- Floating No Button (for the shy effect) -->
+        <div id="floatingNo" class="floating-no hidden">
+            <button class="no-btn-floating" onclick="catchMe()">No</button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== SLIDE NAVIGATION ====================
+        function showSlide(slideNumber) {
+            // Hide all slides
+            const slides = document.querySelectorAll('.story-slide');
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Show selected slide
+            document.getElementById(`slide${slideNumber}`).classList.add('active');
+            
+            // Update progress dots
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index + 1 === slideNumber) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // Hide floating No button
+            const floatingNo = document.getElementById('floatingNo');
+            if (floatingNo) floatingNo.classList.add('hidden');
+        }
+
+        // ==================== VALENTINE'S NO BUTTON SHY EFFECT ====================
+        function moveNoButton() {
+            const noBtn = document.querySelector('.no-btn');
+            const floatingNo = document.getElementById('floatingNo');
+            
+            // Shrink the original No button
+            noBtn.style.opacity = '0.5';
+            noBtn.style.transform = 'scale(0.9)';
+            
+            // Show floating No button at random position
+            floatingNo.classList.remove('hidden');
+            
+            // Random position
+            const randomX = Math.floor(Math.random() * 300) - 150;
+            const randomY = Math.floor(Math.random() * 400) - 200;
+            
+            floatingNo.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+            
+            // Reset original button
+            setTimeout(() => {
+                noBtn.style.opacity = '1';
+                noBtn.style.transform = 'scale(1)';
+            }, 200);
+            
+            // Change text randomly
+            const btn = document.querySelector('.no-btn-floating');
+            const messages = ['No 🙈', '😅 No?', 'Maybe?', 'Try again', 'Catch me'];
+            btn.textContent = messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        function catchMe() {
+            const floatingNo = document.getElementById('floatingNo');
+            
+            // Move to random position
+            const randomX = Math.floor(Math.random() * 400) - 200;
+            const randomY = Math.floor(Math.random() * 500) - 250;
+            
+            floatingNo.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+            
+            // Change button text
+            const btn = document.querySelector('.no-btn-floating');
+            btn.textContent = '🤭 Still No?';
+            
+            setTimeout(() => {
+                btn.textContent = 'No';
+            }, 500);
+        }
+
+        // ==================== FLOWER GIFT ====================
+        function showFlower() {
+            const giftBox = document.querySelector('.flower-gift');
+            const flowerReveal = document.querySelector('.flower-reveal');
+            
+            if (giftBox && flowerReveal) {
+                giftBox.classList.add('hidden');
+                flowerReveal.classList.remove('hidden');
+            }
+        }
+
+        // ==================== HUG MESSAGE ====================
+        function showHugMessage() {
+            const hugBtn = document.querySelector('#slide7 .yes-btn');
+            const hugResponse = document.getElementById('hugResponse');
+            
+            if (hugBtn && hugResponse) {
+                hugBtn.style.display = 'none';
+                hugResponse.classList.remove('hidden');
+            }
+        }
+
+        // ==================== REVEAL TAP MESSAGES ====================
+        function revealMessage(element) {
+            const revealedMsg = element.querySelector('.revealed-message');
+            revealedMsg.classList.toggle('hidden');
+            
+            // Change bullet color and background
+            const bullet = element.querySelector('.bullet');
+            if (!revealedMsg.classList.contains('hidden')) {
+                bullet.style.color = '#ff69b4';
+                element.style.background = '#1a1a1a';
+                element.style.borderColor = '#ff69b4';
+            } else {
+                bullet.style.color = '#ff69b4';
+                element.style.background = '#111';
+                element.style.borderColor = '#222';
+            }
+        }
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', function(e) {
+            const activeSlide = document.querySelector('.story-slide.active');
+            if (!activeSlide) return;
+            
+            const activeId = activeSlide.id;
+            const slideNumber = parseInt(activeId.replace('slide', ''));
+            
+            if (e.key === 'ArrowRight') {
+                if (slideNumber < 9) {
+                    showSlide(slideNumber + 1);
+                } else {
+                    showSlide(1);
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (slideNumber > 1) {
+                    showSlide(slideNumber - 1);
+                } else {
+                    showSlide(9);
+                }
+            }
+        });
+
+        // ==================== TOUCH SWIPE FOR MOBILE ====================
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const activeSlide = document.querySelector('.story-slide.active');
+            if (!activeSlide) return;
+            
+            const activeId = activeSlide.id;
+            const slideNumber = parseInt(activeId.replace('slide', ''));
+            
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - next
+                if (slideNumber < 9) {
+                    showSlide(slideNumber + 1);
+                } else {
+                    showSlide(1);
+                }
+            }
+            
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - previous
+                if (slideNumber > 1) {
+                    showSlide(slideNumber - 1);
+                } else {
+                    showSlide(9);
+                }
+            }
+        }
+
+        // ==================== INITIALIZE ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(1);
+            
+            // Add double click protection on No button
+            const noBtn = document.querySelector('.no-btn');
+            if (noBtn) {
+                noBtn.addEventListener('dblclick', function(e) {
+                    e.preventDefault();
+                    moveNoButton();
+                });
+            }
+        });
+
+        // ==================== PREVENT CONTEXT MENU (for mobile long press) ====================
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
